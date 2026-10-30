@@ -1,0 +1,22 @@
+# InsideJob top-level requirements.
+#
+# The two big dependencies are vendored, not pulled from PyPI, because both are
+# forks whose exact commit matters for reproducibility (see VENDOR.md):
+#
+#   pip install -e ./agentdojo   # Progent-instrumented AgentDojo fork
+#   pip install -e ./progent     # Progent policy engine (package name: secagent)
+#
+# Everything below is what *our* code in src/ needs on top of those.
+
+python-dotenv>=1.0.1
+openai>=1.59.7          # Groq and Gemini are reached via OpenAI-compatible endpoints
+pydantic>=2.7.1
+pytest>=8.0.0
+
+# Cross-engine check. The second policy engine under test, a reimplementation
+# of Progent's design. Optional: the core suite runs without it (its tests
+# skip if absent). Pinned because the differential result is version-specific.
+# NOTE: janus-guard pins openai<2, which downgrades the openai package; this is
+# harmless here (our clients only use the chat.completions path) but explains
+# the version you'll see after installing it.
+janus-guard==0.0.5
